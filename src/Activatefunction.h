@@ -19,7 +19,6 @@
 **************************************************/
 /*************************************************
 Class type: Class of Neure Activate Function
-Copyright: By Niu ZhiYong
 Author: Niu ZhiYong
 Date:2017-03-20
 Description:

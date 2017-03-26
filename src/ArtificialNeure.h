@@ -19,7 +19,6 @@
 **************************************************/
 /*************************************************
 Class type: Class of Basis Artificial Neure
-Copyright: By Niu ZhiYong
 Author: Niu ZhiYong
 Date: 2017-03-20
 Description:
