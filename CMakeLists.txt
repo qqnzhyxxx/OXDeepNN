@@ -35,7 +35,6 @@ message(STATUS "#Qt5Widgets_VERSION=${Qt5Widgets_VERSION}")
 add_executable(${PROJECT_NAME} ${SRC_LIST} ${QTSRC_LIST})
 # Set QT5 module which we used
 qt5_use_modules(${PROJECT_NAME} Core Widgets Gui OpenGL PrintSupport)
-
 #
 # Set Include h file path
 INCLUDE_DIRECTORIES(include/)
