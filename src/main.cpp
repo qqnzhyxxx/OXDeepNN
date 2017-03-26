@@ -1,0 +1,73 @@
+/*************************************************
+Copyright:
+Author: Niu ZhiYong
+Date:2017-03-20
+Description:
+**************************************************/
+#include <iostream>
+#include <gsl/gsl_matrix.h>
+#include <gsl/gsl_rng.h>
+#include <gsl/gsl_randist.h>
+#include <gsl/gsl_eigen.h>
+#include "qcustomplot.h"
+#include <QApplication>
+#include <QtPrintSupport/QPrinter>
+#include <QPainter>
+#include "Enumeration.h"
+#include "Activatefunction.h"
+using namespace std;
+
+int main(int argc, char *argv[])
+{
+    cout << "C++ standard version(__cplusplus)=" << __cplusplus  <<endl;
+
+    Activatefunction *pActfunc = new Activatefunction(SigmoidEnum);
+
+    cout<<"Activatefunction Enum= "<<pActfunc->m_FuncationEnum<<endl;
+    gsl_vector *myvector =gsl_vector_alloc(3);
+
+    int i = myvector->data[0];
+    cout<<"myvector->data[0]= "<<i<<endl;
+    QApplication app(argc, argv);
+    /* set up gui*/
+
+    QMainWindow *window = new QMainWindow;
+
+    if (window->objectName().isEmpty())
+        window->setObjectName(QStringLiteral("MainWindow"));
+    // setup customPlot as central widget of window:
+    QCustomPlot customPlot;
+    window->setCentralWidget(&customPlot);
+
+    // create plot (from quadratic plot example):
+    QVector<double> x(1000), y(1000);
+    double jj = -50;
+    for (int i=0; i<1000; ++i)
+    {
+      x[i] = jj;
+      y[i] = pActfunc->Active(jj);
+      jj = jj + 0.1;
+    }
+    customPlot.addGraph();
+    customPlot.graph(0)->setData(x, y);
+    customPlot.xAxis->setLabel("x");
+    customPlot.yAxis->setLabel("y");
+    customPlot.rescaleAxes();
+    customPlot.graph(0)->setLineStyle(QCPGraph::lsStepCenter);
+    customPlot.graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, Qt::red, Qt::white, 7));
+    //customPlot.graph(1)->setErrorType(QCPGraph::etValue);
+    //customPlot.xAxis->setRange(-50, 50);
+    //customPlot.yAxis->setRange(-1, 1);
+    //customPlot.graph(0)->setLineStyle(QCPGraph::lsLine);
+    //customPlot.graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssDisc, 5));
+    customPlot.replot();
+    window->setGeometry(100, 100, 500, 400);
+    window->show();
+
+
+
+    return app.exec();
+
+
+    //return 0;
+}
