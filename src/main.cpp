@@ -36,14 +36,19 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     cout << "C++ standard version(__cplusplus)=" << __cplusplus  <<endl;
-    Eigen::MatrixXd m(2,2);
-    m(0,0) = 3;
-    m(1,0) = 2.5;
-    m(0,1) = -1;
-    m(1,1) = m(1,0) + m(0,1);
-    cout << m << endl;
-    ArtificialNeure *myNeure = new ArtificialNeure(HeavisideEnum,2);
 
+    ArtificialNeure *myNeure = new ArtificialNeure(HeavisideEnum,2);
+    Eigen::Vector2d invec(2,3);
+    Eigen::Vector3d weivec(10,11,12);
+    myNeure->SetInputList(invec);
+    myNeure->SetWeightList(weivec);
+    cout<<"myNeure->NeureOutput() = "<<myNeure->NeureOutput()<<endl;
+    Eigen::VectorXd outvec;
+    Eigen::VectorXd weioutvec;
+    myNeure->GetInputList(outvec);
+    myNeure->GetWeightList(weioutvec);
+    cout<<"myNeure->GetInputList(outvec) = \n"<<outvec<<endl;
+    cout<<"myNeure->GetWeightList(weioutvec) = \n"<<weioutvec<<endl;
     QApplication app(argc, argv);
     /* set up gui*/
 

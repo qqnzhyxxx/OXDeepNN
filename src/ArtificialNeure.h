@@ -27,8 +27,10 @@ This class defind the Artificial Neure property.
 #pragma once
 
 #include <gsl/gsl_vector.h>
+#include <Eigen/Eigen>
 #include "Macros.h"
 #include "Activatefunction.h"
+using namespace Eigen;
 
 class ArtificialNeure
 {
@@ -44,106 +46,124 @@ public:
             this->SetInputNum( inputnum );
             this->SetWeightNum();
             this->m_pActiveFun = new Activatefunction(functype);
-            m_pInputList = gsl_vector_alloc(m_InputNum);
-            m_pWeightList = gsl_vector_alloc(m_WeightNum);
+
+
+            m_InputList.resize(m_InputNum);
+            m_WeightList.resize(m_WeightNum);
+
+            //m_pInputList = gsl_vector_alloc(m_InputNum);
+            //m_pWeightList = gsl_vector_alloc(m_WeightNum);
 
         }
     }
     ~ArtificialNeure(void)
     {
-        gsl_vector_free(m_pInputList);
-        gsl_vector_free(m_pWeightList);
+        //gsl_vector_free(m_pInputList);
+        //gsl_vector_free(m_pWeightList);
         delete m_pActiveFun;
     }
 
 protected:
 
-   int                  m_WeightNum;
-   int                  m_InputNum;
-   Activatefunction     *m_pActiveFun;      /*Activate Function*/
+    int                     m_WeightNum;            /*equal m_InputNum*/
+    int                     m_InputNum;             /*equal m_WeightNum*/
+    Activatefunction        *m_pActiveFun;          /*Activate Function*/
+    VectorXd                m_WeightList;           /*神经元权重向量Row Vector */
+    VectorXd                m_InputList;            /*神经元输入参数Column Vector */
+    //gsl_vector              *m_pWeightList;         /*神经元权重向量RowVector */
+    //gsl_vector              *m_pInputList;          /*神经元输入参数 */
 
-   gsl_vector           *m_pWeightList;     /*神经元权重向量 */
-   gsl_vector           *m_pInputList;      /*神经元输入参数 */
 public:
 
-   /* Property Set Function */
-   /// @brief  Set The Number of Artificial Neure Input Vector
-   /// @input  <int> inputnum
-   /// @return <void>
-   inline void SetInputNum( IN int inputnum );
-   /// @brief  Set Artificial Neure Input Vector
-   /// @input  <gsl_vector> *inputlist
-   /// @return <void>
-   inline void SetInputList( IN gsl_vector *inputlist );
-   /// @brief  Set The Number of Artificial Neure Weight Vector(Decided by InputNum)
-   /// @input  <void>
-   /// @return <void>
-   inline void SetWeightNum();
-   /// @brief  Set Artificial Neure Weight Vector
-   /// @input  <gsl_vector> *weightlist
-   /// @return <void>
-   inline void SetWeightList( IN gsl_vector *weightlist );
+    /* Property Set Function */
 
-   /* Property Get Function */
-   /// @brief  Get The Number of Artificial Neure Input Vector
-   /// @input  <void>
-   /// @return <void>
-   inline int GetInputNum( );
-   /// @brief  Get Artificial Neure Input Vector
-   /// @input  <gsl_vector> *inputlist
-   /// @return <void>
-   inline void GetInputList( OUT gsl_vector *inputlist );
-   /// @brief  Get The Number of Artificial Neure Weight Vector(Decided by InputNum)
-   /// @input  <void>
-   /// @return <void>
-   inline int GetWeightNum();
-   /// @brief  Get Artificial Neure Weight Vector
-   /// @input  <gsl_vector> *weightlist
-   /// @return <void>
-   inline void GetWeightList( OUT gsl_vector *weightlist );
-   /// @brief  Artificial Neure Activation Produces Output
-   /// @input  <void>
-   /// @return <double> Output of one Artificial Neure
-   inline double NeureOutput();
+    /// @brief  Set The Number of Artificial Neure Input Vector
+    /// @input  <int> inputnum
+    /// @return <void>
+    inline void SetInputNum( IN int inputnum );
+    /// @brief  Set Artificial Neure Input Vector
+    /// @input  <gsl_vector> *inputlist
+    /// @return <void>
+    inline void SetInputList( IN const Eigen::VectorXd &inputlist );
+    /// @brief  Set The Number of Artificial Neure Weight Vector(Decided by InputNum)
+    /// @input  <void>
+    /// @return <void>
+    inline void SetWeightNum();
+    /// @brief  Set Artificial Neure Weight Vector
+    /// @input  <gsl_vector> *weightlist
+    /// @return <void>
+    inline void SetWeightList( IN const Eigen::VectorXd &weightlist );
+
+    /* Property Get Function */
+
+    /// @brief  Get The Number of Artificial Neure Input Vector
+    /// @input  <void>
+    /// @return <void>
+    inline int GetInputNum( ) const;
+    /// @brief  Get Artificial Neure Input Vector
+    /// @input  <gsl_vector> *inputlist
+    /// @return <void>
+    inline void GetInputList( OUT Eigen::VectorXd &inputlist ) const;
+    /// @brief  Get The Number of Artificial Neure Weight Vector(Decided by InputNum)
+    /// @input  <void>
+    /// @return <void>
+    inline int GetWeightNum() const;
+    /// @brief  Get Artificial Neure Weight Vector
+    /// @input  <gsl_vector> *weightlist
+    /// @return <void>
+    inline void GetWeightList( OUT Eigen::VectorXd &weightlist ) const;
+    /// @brief  Artificial Neure Activation Produces Output
+    /// @input  <void>
+    /// @return <double> Output of one Artificial Neure
+    inline double NeureOutput() const;
 
 };
 /* Function implementation */
 inline void ArtificialNeure::SetInputNum( IN int inputnum)
 {
-    m_InputNum = inputnum;
+    //m_InputList(0) = 1 for Offset
+    m_InputNum = inputnum + 1;
 }
 inline void ArtificialNeure::SetWeightNum()
 {
-    m_WeightNum = m_InputNum + 1;
+    m_WeightNum = m_InputNum ;
 }
-inline void ArtificialNeure::SetInputList( IN gsl_vector *inputlist)
+inline void ArtificialNeure::SetInputList( IN const Eigen::VectorXd &inputlist)
 {
-    gsl_vector_memcpy(m_pInputList , inputlist);
+    //m_InputList(0) = 1 for Offset
+    m_InputList(0)  = 1;
+    for (int i = 0; i< inputlist.rows(); i++)
+    {
+        m_InputList(i+1) = inputlist(i);
+    }
 }
-inline void ArtificialNeure::SetWeightList( IN gsl_vector *weightlist)
+inline void ArtificialNeure::SetWeightList( IN const Eigen::VectorXd &weightlist)
 {
-    gsl_vector_memcpy(m_pWeightList, weightlist);
+    m_WeightList = weightlist;
 }
 /*****************************/
-inline int ArtificialNeure::GetInputNum( )
+inline int ArtificialNeure::GetInputNum( ) const
 {
     return m_InputNum ;
 }
-inline int ArtificialNeure::GetWeightNum()
+inline int ArtificialNeure::GetWeightNum() const
 {
     return m_WeightNum ;
 }
-inline void ArtificialNeure::GetInputList( OUT gsl_vector *inputlist)
+inline void ArtificialNeure::GetInputList( OUT Eigen::VectorXd &inputlist) const
 {
-    gsl_vector_memcpy( inputlist, m_pInputList );
+    inputlist.resize(m_InputList.rows()-1);
+    for (int i = 0; i< (m_InputList.rows()-1); i++)
+    {
+        inputlist(i) = m_InputList(i+1);
+    }
 }
-inline void ArtificialNeure::GetWeightList( OUT gsl_vector *weightlist)
+inline void ArtificialNeure::GetWeightList( OUT Eigen::VectorXd &weightlist) const
 {
-    gsl_vector_memcpy( weightlist, m_pWeightList );
+    weightlist = m_WeightList;
 }
 /*****************************/
-inline double ArtificialNeure::NeureOutput()
+inline double ArtificialNeure::NeureOutput() const
 {
-    double temp = 0;
-    return temp;
+    return ( m_pActiveFun->ActiveFunc( m_WeightList.dot(m_InputList) ) );
 }
