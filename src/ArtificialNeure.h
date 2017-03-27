@@ -26,7 +26,6 @@ This class defind the Artificial Neure property.
 **************************************************/
 #pragma once
 
-#include <gsl/gsl_vector.h>
 #include <Eigen/Eigen>
 #include "Macros.h"
 #include "Activatefunction.h"
@@ -46,20 +45,12 @@ public:
             this->SetInputNum( inputnum );
             this->SetWeightNum();
             this->m_pActiveFun = new Activatefunction(functype);
-
-
             m_InputList.resize(m_InputNum);
             m_WeightList.resize(m_WeightNum);
-
-            //m_pInputList = gsl_vector_alloc(m_InputNum);
-            //m_pWeightList = gsl_vector_alloc(m_WeightNum);
-
         }
     }
     ~ArtificialNeure(void)
     {
-        //gsl_vector_free(m_pInputList);
-        //gsl_vector_free(m_pWeightList);
         delete m_pActiveFun;
     }
 
@@ -70,8 +61,6 @@ protected:
     Activatefunction        *m_pActiveFun;          /*Activate Function*/
     VectorXd                m_WeightList;           /*神经元权重向量Row Vector */
     VectorXd                m_InputList;            /*神经元输入参数Column Vector */
-    //gsl_vector              *m_pWeightList;         /*神经元权重向量RowVector */
-    //gsl_vector              *m_pInputList;          /*神经元输入参数 */
 
 public:
 
