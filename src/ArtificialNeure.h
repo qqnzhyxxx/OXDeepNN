@@ -44,6 +44,9 @@ public:
             this->SetInputNum( inputnum );
             this->SetWeightNum();
             this->m_pActiveFun = new Activatefunction(functype);
+            m_pInputList = gsl_vector_alloc(m_InputNum);
+            m_pWeightList = gsl_vector_alloc(m_WeightNum);
+
         }
     }
     ~ArtificialNeure(void)
@@ -58,7 +61,7 @@ protected:
    int                  m_WeightNum;
    int                  m_InputNum;
    Activatefunction     *m_pActiveFun;      /*Activate Function*/
-   double               m_Output;           /*神经元输出参数 */
+
    gsl_vector           *m_pWeightList;     /*神经元权重向量 */
    gsl_vector           *m_pInputList;      /*神经元输入参数 */
 public:
@@ -98,6 +101,10 @@ public:
    /// @input  <gsl_vector> *weightlist
    /// @return <void>
    inline void GetWeightList( OUT gsl_vector *weightlist );
+   /// @brief  Artificial Neure Activation Produces Output
+   /// @input  <void>
+   /// @return <double> Output of one Artificial Neure
+   inline double NeureOutput();
 
 };
 /* Function implementation */
@@ -133,4 +140,10 @@ inline void ArtificialNeure::GetInputList( OUT gsl_vector *inputlist)
 inline void ArtificialNeure::GetWeightList( OUT gsl_vector *weightlist)
 {
     gsl_vector_memcpy( weightlist, m_pWeightList );
+}
+/*****************************/
+inline double ArtificialNeure::NeureOutput()
+{
+    double temp = 0;
+    return temp;
 }

@@ -28,19 +28,22 @@
 #include <QPainter>
 #include "Enumeration.h"
 #include "Activatefunction.h"
+#include "ArtificialNeure.h"
+#include <Eigen/Dense>
+
 using namespace std;
 
 int main(int argc, char *argv[])
 {
     cout << "C++ standard version(__cplusplus)=" << __cplusplus  <<endl;
+    Eigen::MatrixXd m(2,2);
+    m(0,0) = 3;
+    m(1,0) = 2.5;
+    m(0,1) = -1;
+    m(1,1) = m(1,0) + m(0,1);
+    cout << m << endl;
+    ArtificialNeure *myNeure = new ArtificialNeure(HeavisideEnum,2);
 
-    Activatefunction *pActfunc = new Activatefunction(SigmoidEnum);
-
-    cout<<"Activatefunction Enum= "<<pActfunc->m_FuncationEnum<<endl;
-    gsl_vector *myvector =gsl_vector_alloc(3);
-
-    int i = myvector->data[0];
-    cout<<"myvector->data[0]= "<<i<<endl;
     QApplication app(argc, argv);
     /* set up gui*/
 
@@ -58,7 +61,7 @@ int main(int argc, char *argv[])
     for (int i=0; i<1000; ++i)
     {
       x[i] = jj;
-      y[i] = pActfunc->Active(jj);
+      y[i] = jj*jj;
       jj = jj + 0.1;
     }
     customPlot.addGraph();

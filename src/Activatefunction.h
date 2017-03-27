@@ -72,12 +72,12 @@ public:
     }
     /// @brief  Activate Function Pointer
     /// @input  <double>
-    /// @return <double>The Output of Neure decide by m_FuncationEnum
-    inline double Active ( IN double input);
+    /// @return <double>The Output of Activate Function decide by m_FuncationEnum
+    inline double ActiveFunc ( IN double input);
 
 };
 /* Function implementation */
-inline double Activatefunction::Active ( IN double input)
+inline double Activatefunction::ActiveFunc ( IN double input)
 {
     switch (m_FuncationEnum)
     {
