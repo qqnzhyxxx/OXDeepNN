@@ -18,7 +18,12 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed
 set(CMAKE_AUTOMOC ON)
 # Set the path to build projcet
+set(CMAKE_BINARY_DIR "${PROJECT_SOURCE_DIR}/bin")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
 set(EXECUTABLE_OUTPUT_PATH  "${PROJECT_SOURCE_DIR}/bin")
+set(PROJECT_BINARY_DIR  "${PROJECT_SOURCE_DIR}/bin")
+message(STATUS "#EXECUTABLE_OUTPUT_PATH=${EXECUTABLE_OUTPUT_PATH}")
+
 # Add Qt module in project
 find_package(Qt5Core)
 find_package(Qt5Widgets)
