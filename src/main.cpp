@@ -22,7 +22,7 @@
 #include <gsl/gsl_rng.h>
 #include <gsl/gsl_randist.h>
 #include <gsl/gsl_eigen.h>
-#include "qcustomplot.h"
+#include "QTplot/qcustomplot.h"
 #include <QApplication>
 #include <QtPrintSupport/QPrinter>
 #include <QPainter>
@@ -37,11 +37,12 @@ int main(int argc, char *argv[])
 {
     cout << "C++ standard version(__cplusplus)=" << __cplusplus  <<endl;
 
-    ArtificialNeure *myNeure = new ArtificialNeure(HeavisideEnum,2);
+    ArtificialNeure *myNeure = new ArtificialNeure(HeavisideEnum, 2, true);
     Eigen::Vector2d invec(2,3);
-    Eigen::Vector3d weivec(10,11,12);
+    Eigen::Vector3d weivec1(10,11,12);
+    Eigen::Vector2d weivec2(10,11);
     myNeure->SetInputList(invec);
-    myNeure->SetWeightList(weivec);
+    myNeure->SetWeightList(weivec1);
     cout<<"myNeure->NeureOutput() = "<<myNeure->NeureOutput()<<endl;
     Eigen::VectorXd outvec;
     Eigen::VectorXd weioutvec;
@@ -49,11 +50,10 @@ int main(int argc, char *argv[])
     myNeure->GetWeightList(weioutvec);
     cout<<"myNeure->GetInputList(outvec) = \n"<<outvec<<endl;
     cout<<"myNeure->GetWeightList(weioutvec) = \n"<<weioutvec<<endl;
+
+    /* *********set up gui************/
     QApplication app(argc, argv);
-    /* set up gui*/
-
     QMainWindow *window = new QMainWindow;
-
     if (window->objectName().isEmpty())
         window->setObjectName(QStringLiteral("MainWindow"));
     // setup customPlot as central widget of window:

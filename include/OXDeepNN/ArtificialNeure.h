@@ -36,12 +36,13 @@ class ArtificialNeure
 public:
 
     /// @param[in] inputNum >= 1
-    ArtificialNeure(IN EnumActiveFunction functype, IN int inputnum)
+    ArtificialNeure(IN EnumActiveFunction functype, IN int inputnum, IN bool boffset)
     {
         if(inputnum<1)
             throw "The Input Number of Artificial Neure is < 1!";
         else
         {
+            this->SetbOffset( boffset );
             this->SetInputNum( inputnum );
             this->SetWeightNum();
             this->m_pActiveFun = new Activatefunction(functype);
@@ -49,13 +50,13 @@ public:
             m_WeightList.resize(m_WeightNum);
         }
     }
-    ~ArtificialNeure(void)
+    virtual ~ArtificialNeure(void)
     {
         delete m_pActiveFun;
     }
 
 protected:
-
+    bool                    m_bOffset;              /*set if the Neure has Offset of not */
     int                     m_WeightNum;            /*equal m_InputNum*/
     int                     m_InputNum;             /*equal m_WeightNum*/
     Activatefunction        *m_pActiveFun;          /*Activate Function*/
@@ -66,6 +67,10 @@ public:
 
     /* Property Set Function */
 
+    /// @brief  Set if the Neure has Offset of not
+    /// @input  <bool> boffset
+    /// @return <void>
+    inline void SetbOffset( IN bool boffset );
     /// @brief  Set The Number of Artificial Neure Input Vector
     /// @input  <int> inputnum
     /// @return <void>
@@ -85,6 +90,10 @@ public:
 
     /* Property Get Function */
 
+    /// @brief  Find the Neure has Offset of not
+    /// @input  <bool> boffset
+    /// @return <void>
+    inline bool GetbOffset( ) const;
     /// @brief  Get The Number of Artificial Neure Input Vector
     /// @input  <void>
     /// @return <void>
@@ -108,10 +117,17 @@ public:
 
 };
 /* Function implementation */
+inline void ArtificialNeure::SetbOffset(bool boffset)
+{
+    m_bOffset = boffset;
+}
 inline void ArtificialNeure::SetInputNum( IN int inputnum)
 {
-    //m_InputList(0) = 1 for Offset
-    m_InputNum = inputnum + 1;
+
+    if (m_bOffset)
+        m_InputNum = inputnum + 1;      //m_InputList(0) = 1 for Offset
+    else
+        m_InputNum = inputnum;          //the Neure has not Offset
 }
 inline void ArtificialNeure::SetWeightNum()
 {
@@ -119,18 +135,34 @@ inline void ArtificialNeure::SetWeightNum()
 }
 inline void ArtificialNeure::SetInputList( IN const Eigen::VectorXd &inputlist)
 {
-    //m_InputList(0) = 1 for Offset
-    m_InputList(0)  = 1;
-    for (int i = 0; i< inputlist.rows(); i++)
+
+    if (m_bOffset)
     {
-        m_InputList(i+1) = inputlist(i);
+        //m_InputList(0) = 1 for Offset
+        m_InputList(0)  = 1;
+        for (int i = 0; i< inputlist.rows(); i++)
+        {
+            m_InputList(i+1) = inputlist(i);
+        }
     }
+    else
+    {   //the Neure has not Offset
+        for (int i = 0; i< inputlist.rows(); i++)
+        {
+            m_InputList(i) = inputlist(i);
+        }
+    }
+
 }
 inline void ArtificialNeure::SetWeightList( IN const Eigen::VectorXd &weightlist)
 {
     m_WeightList = weightlist;
 }
 /*****************************/
+inline bool ArtificialNeure::GetbOffset() const
+{
+    return m_bOffset;
+}
 inline int ArtificialNeure::GetInputNum( ) const
 {
     return m_InputNum ;
@@ -141,11 +173,25 @@ inline int ArtificialNeure::GetWeightNum() const
 }
 inline void ArtificialNeure::GetInputList( OUT Eigen::VectorXd &inputlist) const
 {
-    inputlist.resize(m_InputList.rows()-1);
-    for (int i = 0; i< (m_InputList.rows()-1); i++)
+    if (m_bOffset)
     {
-        inputlist(i) = m_InputList(i+1);
+        //m_InputList(0) = 1 for Offset
+        inputlist.resize(m_InputList.rows()-1);
+        for (int i = 0; i< (m_InputList.rows()-1); i++)
+        {
+            inputlist(i) = m_InputList(i+1);
+        }
     }
+    else
+    {
+        //the Neure has not Offset
+        inputlist.resize(m_InputList.rows());
+        for (int i = 0; i< m_InputList.rows(); i++)
+        {
+            inputlist(i) = m_InputList(i);
+        }
+    }
+
 }
 inline void ArtificialNeure::GetWeightList( OUT Eigen::VectorXd &weightlist) const
 {

@@ -37,11 +37,15 @@ class Activatefunction
 {
 public:
 
-     Activatefunction( IN EnumActiveFunction functype )
+    Activatefunction( IN EnumActiveFunction functype )
     {
-         m_FuncationEnum = functype;
+         this->m_FuncationEnum = functype;
     }
-    ~Activatefunction(void);
+    virtual ~Activatefunction(void)
+    {
+
+    }
+
 public:
      EnumActiveFunction m_FuncationEnum;
 

@@ -42,7 +42,7 @@ add_executable(${PROJECT_NAME} ${SRC_LIST} ${QTSRC_LIST})
 qt5_use_modules(${PROJECT_NAME} Core Widgets Gui OpenGL PrintSupport)
 #
 # Set Include h file path
-INCLUDE_DIRECTORIES(include/)
+INCLUDE_DIRECTORIES(include/ include/OXDeepNN)
 # Install so file into usr/local/lib
 message(STATUS "#CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}")
 
