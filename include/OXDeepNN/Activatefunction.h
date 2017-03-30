@@ -27,6 +27,7 @@ And set Activation process algorithm by
 (double Activatefunction::Active ( IN double input)).
 **************************************************/
 #pragma once
+#include <stdexcept>
 #include <cmath>
 #include "Macros.h"
 #include "Enumeration.h"
@@ -98,6 +99,7 @@ inline double Activatefunction::ActiveFunc ( IN double input)
         return Activatefunction::Tanh(input);
         break;
     default:
+        throw std::runtime_error("Activate Function Class get mistake!");
         break;
     }
 }

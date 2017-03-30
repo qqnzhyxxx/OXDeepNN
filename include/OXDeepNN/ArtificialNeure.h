@@ -26,6 +26,7 @@ This class defind the Artificial Neure property.
 **************************************************/
 #pragma once
 
+#include <stdexcept>
 #include <Eigen/Eigen>
 #include "Macros.h"
 #include "Activatefunction.h"
@@ -42,6 +43,8 @@ public:
             throw "The Input Number of Artificial Neure is < 1!";
         else
         {
+            if(inputnum <1)
+                throw std::runtime_error("The Input Number < 1!");
             this->SetbOffset( boffset );
             this->SetInputNum( inputnum );
             this->SetWeightNum();
@@ -135,6 +138,8 @@ inline void ArtificialNeure::SetWeightNum()
 }
 inline void ArtificialNeure::SetInputList( IN const Eigen::VectorXd &inputlist)
 {
+    if( inputlist.maxCoeff()>1 || inputlist.minCoeff()<-1 )
+        throw std::range_error("The Input out of range [-1,1]!");
 
     if (m_bOffset)
     {

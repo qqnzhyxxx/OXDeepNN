@@ -24,8 +24,7 @@
 #include <gsl/gsl_eigen.h>
 #include "QTplot/qcustomplot.h"
 #include <QApplication>
-#include <QtPrintSupport/QPrinter>
-#include <QPainter>
+
 #include "Enumeration.h"
 #include "Activatefunction.h"
 #include "ArtificialNeure.h"
@@ -38,7 +37,7 @@ int main(int argc, char *argv[])
     cout << "C++ standard version(__cplusplus)=" << __cplusplus  <<endl;
 
     ArtificialNeure *myNeure = new ArtificialNeure(HeavisideEnum, 2, true);
-    Eigen::Vector2d invec(2,3);
+    Eigen::Vector2d invec(1,0.3);
     Eigen::Vector3d weivec1(10,11,12);
     Eigen::Vector2d weivec2(10,11);
     myNeure->SetInputList(invec);

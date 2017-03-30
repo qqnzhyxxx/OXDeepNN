@@ -1,3 +1,9 @@
+#************************************************#
+#                                                #
+# Copyright (C) 2017  Niu Zhiyong (China)        #
+# <tbnzhyxxx@163.com>                            #
+#                                                #
+#************************************************#
 cmake_minimum_required(VERSION 2.8.11)
 # Set project name
 project(OXDeepNN)
@@ -13,6 +19,17 @@ aux_source_directory (${CMAKE_CURRENT_SOURCE_DIR}/src SRC_LIST)
 aux_source_directory (${CMAKE_CURRENT_SOURCE_DIR}/src/QTsrc QTSRC_LIST)
 #message(STATUS "#QTSRC_LIST=${QTSRC_LIST}")
 #
+# Set if build test file or not
+option(BUILD_TESTS "Build tests." TRUE)
+if (BUILD_TESTS)
+    enable_testing()
+    add_subdirectory(tests test_bin)
+endif()
+# Set folder in project dir
+add_subdirectory(include)
+add_subdirectory(src)
+add_subdirectory(lib)
+#
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed
@@ -22,8 +39,10 @@ set(CMAKE_BINARY_DIR "${PROJECT_SOURCE_DIR}/bin")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
 set(EXECUTABLE_OUTPUT_PATH  "${PROJECT_SOURCE_DIR}/bin")
 set(PROJECT_BINARY_DIR  "${PROJECT_SOURCE_DIR}/bin")
-message(STATUS "#EXECUTABLE_OUTPUT_PATH=${EXECUTABLE_OUTPUT_PATH}")
-
+#message(STATUS "#EXECUTABLE_OUTPUT_PATH=${EXECUTABLE_OUTPUT_PATH}")
+#message(STATUS "#CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}")
+#message(STATUS "#CMAKE_RUNTIME_OUTPUT_DIRECTORY=${CMAKE_RUNTIME_OUTPUT_DIRECTORY}")
+#message(STATUS "#PROJECT_BINARY_DIR=${PROJECT_BINARY_DIR}")
 # Add Qt module in project
 find_package(Qt5Core)
 find_package(Qt5Widgets)
@@ -80,11 +99,6 @@ ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
     endif()
 ENDIF ()
 
-# Set folder in project dir
-add_subdirectory(include)
-add_subdirectory(src)
-add_subdirectory(lib)
-add_subdirectory(test)
 #
 #message(STATUS "EXECUTABLE_OUTPUT_PATH=${EXECUTABLE_OUTPUT_PATH}")
 #message(STATUS "CMAKE_BINARY_DIR=${CMAKE_BINARY_DIR}")
