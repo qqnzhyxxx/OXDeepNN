@@ -30,6 +30,7 @@
 #include "ArtificialNeure.h"
 #include <Eigen/Dense>
 
+
 using namespace std;
 
 int main(int argc, char *argv[])
@@ -50,6 +51,7 @@ int main(int argc, char *argv[])
     cout<<"myNeure->GetInputList(outvec) = \n"<<outvec<<endl;
     cout<<"myNeure->GetWeightList(weioutvec) = \n"<<weioutvec<<endl;
 
+
     /* *********set up gui************/
     QApplication app(argc, argv);
     QMainWindow *window = new QMainWindow;
@@ -60,20 +62,20 @@ int main(int argc, char *argv[])
     window->setCentralWidget(&customPlot);
 
     // create plot (from quadratic plot example):
-    QVector<double> x(1000), y(1000);
-    double jj = -50;
-    for (int i=0; i<1000; ++i)
+    QVector<double> x(10), y(10);
+    double jj = -5;
+    for (int i=0; i<10; ++i)
     {
       x[i] = jj;
       y[i] = jj*jj;
-      jj = jj + 0.1;
+      jj = jj + 1;
     }
     customPlot.addGraph();
     customPlot.graph(0)->setData(x, y);
     customPlot.xAxis->setLabel("x");
     customPlot.yAxis->setLabel("y");
     customPlot.rescaleAxes();
-    customPlot.graph(0)->setLineStyle(QCPGraph::lsStepCenter);
+    customPlot.graph(0)->setLineStyle(QCPGraph::lsNone);//lsStepCenter
     customPlot.graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, Qt::red, Qt::white, 7));
     //customPlot.graph(1)->setErrorType(QCPGraph::etValue);
     //customPlot.xAxis->setRange(-50, 50);

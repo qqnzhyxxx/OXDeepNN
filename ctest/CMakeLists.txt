@@ -27,7 +27,6 @@ find_package(Qt5PrintSupport)
 if(Qt5_POSITION_INDEPENDENT_CODE)
     set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 endif()
-message(STATUS "#Qt5Widgets_VERSION=${Qt5Widgets_VERSION}")
 # Set source file to make executable
 #add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp )
 add_executable(perceptron_test perceptron.cpp)
@@ -59,7 +58,7 @@ ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
         file(COPY  ${CMAKE_CURRENT_SOURCE_DIR}/lib/lib-windows/libGSL/libgsl-19.dll
                    ${CMAKE_CURRENT_SOURCE_DIR}/lib/lib-windows/libGSL/libgslcblas-0.dll
                    ${CMAKE_CURRENT_SOURCE_DIR}/lib/lib-windows/libqcustomplot/qcustomplot2.dll
-             DESTINATION ${EXECUTABLE_OUTPUT_PATH}/test_bin/Perceptron)
+             DESTINATION ${EXECUTABLE_OUTPUT_PATH}/ctest_bin/)
     endif()
 ENDIF ()
 
