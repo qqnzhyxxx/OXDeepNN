@@ -34,6 +34,7 @@ int main(int argc, char *argv[])
     double classB_normparameter = classB_date.maxCoeff();
     // set initial weightlist
 
+
     // start to train
 
 

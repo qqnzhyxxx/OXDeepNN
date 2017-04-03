@@ -121,7 +121,7 @@ inline double Activatefunction::Signum( IN double input)
 {
     if( input > 0 )
         return 1;
-    else if( input = 0 )
+    else if( input == 0 )
         return 0;
     else
         return -1;
