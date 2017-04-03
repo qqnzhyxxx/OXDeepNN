@@ -31,7 +31,6 @@ add_subdirectory(include)
 add_subdirectory(src)
 add_subdirectory(lib)
 add_subdirectory(demo demo_bin)
-
 # Set the path to build projcet
 set(CMAKE_BINARY_DIR "${PROJECT_SOURCE_DIR}/bin")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
@@ -82,14 +81,22 @@ set(OXDeepNN_LINK_GXX
     ${CMAKE_INSTALL_PREFIX}/lib/libgsl.so.19
     ${CMAKE_INSTALL_PREFIX}/lib/libgslcblas.so.0
     ${CMAKE_INSTALL_PREFIX}/lib/libqcustomplot.so.2)
-set(OXDeepNN_LINK_MSVCLIB
-    ${CMAKE_CURRENT_SOURCE_DIR}/lib/lib-windows/libGSL/libgsl-19.lib
-    ${CMAKE_CURRENT_SOURCE_DIR}/lib/lib-windows/libGSL/libgslcblas-0.lib
-    ${CMAKE_CURRENT_SOURCE_DIR}/lib/lib-windows/libqcustomplot/qcustomplot2.lib)
-set(OXDeepNN_LINK_MSVCDLL
-    ${CMAKE_CURRENT_SOURCE_DIR}/lib/lib-windows/libGSL/libgsl-19.dll
-    ${CMAKE_CURRENT_SOURCE_DIR}/lib/lib-windows/libGSL/libgslcblas-0.dll
-    ${CMAKE_CURRENT_SOURCE_DIR}/lib/lib-windows/libqcustomplot/qcustomplot2.dll)
+set(OXDeepNN_LINK_MSVCLIB_RELEASE
+    ${PROJECT_SOURCE_DIR}/lib/lib-windows/libGSL/libgsl-19.lib
+    ${PROJECT_SOURCE_DIR}/lib/lib-windows/libGSL/libgslcblas-0.lib
+    ${PROJECT_SOURCE_DIR}/lib/lib-windows/libqcustomplot/qcustomplot2.lib)
+set(OXDeepNN_LINK_MSVCDLL_RELEASE
+    ${PROJECT_SOURCE_DIR}/lib/lib-windows/libGSL/libgsl-19.dll
+    ${PROJECT_SOURCE_DIR}/lib/lib-windows/libGSL/libgslcblas-0.dll
+    ${PROJECT_SOURCE_DIR}/lib/lib-windows/libqcustomplot/qcustomplot2.dll)
+set(OXDeepNN_LINK_MSVCLIB_DEBUG
+    ${PROJECT_SOURCE_DIR}/lib/lib-windows/libGSL/libgsl-19.lib
+    ${PROJECT_SOURCE_DIR}/lib/lib-windows/libGSL/libgslcblas-0.lib
+    ${PROJECT_SOURCE_DIR}/lib/lib-windows/libqcustomplot/qcustomplotd2.lib)
+set(OXDeepNN_LINK_MSVCDLL_DEBUG
+    ${PROJECT_SOURCE_DIR}/lib/lib-windows/libGSL/libgsl-19.dll
+    ${PROJECT_SOURCE_DIR}/lib/lib-windows/libGSL/libgslcblas-0.dll
+    ${PROJECT_SOURCE_DIR}/lib/lib-windows/libqcustomplot/qcustomplotd2.dll)
 # Set lib in Linux+GunCxx Compiler Environment
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
     if(CMAKE_COMPILER_IS_GNUCXX)
@@ -100,9 +107,12 @@ IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
     if(MSVC)
         MESSAGE(STATUS "#COMPILER_IS_MSVC")
-        target_link_libraries(${PROJECT_NAME} ${OXDeepNN_LINK_MSVCLIB})
+        target_link_libraries(${PROJECT_NAME} debug ${OXDeepNN_LINK_MSVCLIB_DEBUG})
+        target_link_libraries(${PROJECT_NAME} optimized ${OXDeepNN_LINK_MSVCLIB_RELEASE})
+        file(COPY ${OXDeepNN_LINK_MSVCDLL_RELEASE} DESTINATION ${EXECUTABLE_OUTPUT_PATH})
+        file(COPY ${OXDeepNN_LINK_MSVCDLL_DEBUG} DESTINATION ${EXECUTABLE_OUTPUT_PATH})
         Add_Definitions(-DGSL_DLL)
-        file(COPY ${OXDeepNN_LINK_MSVCDLL} DESTINATION ${EXECUTABLE_OUTPUT_PATH})
+
     endif()
 ENDIF ()
 
