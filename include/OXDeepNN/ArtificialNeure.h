@@ -39,18 +39,18 @@ public:
     /// @param[in] inputNum >= 1
     ArtificialNeure(IN EnumActiveFunction functype, IN int inputnum, IN bool boffset)
     {
-        if(inputnum<1)
-            throw "The Input Number of Artificial Neure is < 1!";
+        if(inputnum <1)
+            throw std::runtime_error("The Input Number < 1!");
         else
-        {
-            if(inputnum <1)
-                throw std::runtime_error("The Input Number < 1!");
+        { 
             this->SetbOffset( boffset );
             this->SetInputNum( inputnum );
             this->SetWeightNum();
             this->m_pActiveFun = new Activatefunction(functype);
             m_InputList.resize(m_InputNum);
             m_WeightList.resize(m_WeightNum);
+            m_NormParameter = 0;
+            m_bInitalInputlist = false;
         }
     }
     virtual ~ArtificialNeure(void)
@@ -60,16 +60,15 @@ public:
 
 protected:
     bool                    m_bOffset;              /*set if the Neure has Offset of not */
+    bool                    m_bInitalInputlist;     /*set if the Neure has got inputlist of not */
     int                     m_WeightNum;            /*equal m_InputNum*/
     int                     m_InputNum;             /*equal m_WeightNum*/
+    double                  m_NormParameter;        /*Normalized parameter*/
     Activatefunction        *m_pActiveFun;          /*Activate Function*/
     VectorXd                m_WeightList;           /*神经元权重向量Row Vector */
     VectorXd                m_InputList;            /*神经元输入参数Column Vector */
-
-public:
-
-    /* Property Set Function */
-
+protected:
+    /* Property Set Protected Function */
     /// @brief  Set if the Neure has Offset of not
     /// @input  <bool> boffset
     /// @return <void>
@@ -78,18 +77,28 @@ public:
     /// @input  <int> inputnum
     /// @return <void>
     inline void SetInputNum( IN int inputnum );
-    /// @brief  Set Artificial Neure Input Vector
-    /// @input  <gsl_vector> *inputlist
-    /// @return <void>
-    inline void SetInputList( IN const Eigen::VectorXd &inputlist );
     /// @brief  Set The Number of Artificial Neure Weight Vector(Decided by InputNum)
     /// @input  <void>
     /// @return <void>
     inline void SetWeightNum();
+public:
+
+    /* Property Set Function */
+
+    /// @brief  Set Artificial Neure Input Vector
+    /// @input  <gsl_vector> *inputlist
+    /// @return <void>
+    inline void SetInputList( IN const Eigen::VectorXd &inputlist );
+
     /// @brief  Set Artificial Neure Weight Vector
     /// @input  <gsl_vector> *weightlist
     /// @return <void>
     inline void SetWeightList( IN const Eigen::VectorXd &weightlist );
+
+    /// @brief  Set Artificial Neure Normalized parameter
+    /// @input  <double> normparameter
+    /// @return <void>
+    inline void SetNormParameter( IN const double normparameter );
 
     /* Property Get Function */
 
@@ -97,26 +106,47 @@ public:
     /// @input  <bool> boffset
     /// @return <void>
     inline bool GetbOffset( ) const;
+
     /// @brief  Get The Number of Artificial Neure Input Vector
     /// @input  <void>
     /// @return <void>
     inline int GetInputNum( ) const;
+
     /// @brief  Get Artificial Neure Input Vector
     /// @input  <gsl_vector> *inputlist
     /// @return <void>
     inline void GetInputList( OUT Eigen::VectorXd &inputlist ) const;
+
     /// @brief  Get Total Artificial Neure Input Vector
     /// @input  <gsl_vector> *inputlist
     /// @return <void>
     inline void GetTotalInputList( OUT Eigen::VectorXd &inputlist ) const;
+
+    /// @brief  Get Normalized Artificial Neure Input Vector
+    /// @input  <gsl_vector> *inputlist
+    /// @return <void>
+    inline void GetNormInputList( OUT Eigen::VectorXd &inputlist ) const;
+
+    /// @brief  Get Total Normalized Artificial Neure Input Vector
+    /// @input  <gsl_vector> *inputlist
+    /// @return <void>
+    inline void GetTotalNormInputList( OUT Eigen::VectorXd &inputlist ) const;
+
     /// @brief  Get The Number of Artificial Neure Weight Vector(Decided by InputNum)
     /// @input  <void>
     /// @return <void>
     inline int GetWeightNum() const;
+
     /// @brief  Get Artificial Neure Weight Vector
     /// @input  <gsl_vector> *weightlist
     /// @return <void>
     inline void GetWeightList( OUT Eigen::VectorXd &weightlist ) const;
+
+    /// @brief  Get Artificial Neure Normalized parameter
+    /// @input  <double> *normparameter
+    /// @return <void>
+    inline double GetNormParameter() const;
+
     /// @brief  Artificial Neure Activation Produces Output
     /// @input  <void>
     /// @return <double> Output of one Artificial Neure
@@ -142,24 +172,32 @@ inline void ArtificialNeure::SetWeightNum()
 }
 inline void ArtificialNeure::SetInputList( IN const Eigen::VectorXd &inputlist)
 {
-    if( inputlist.maxCoeff()>1 || inputlist.minCoeff()<-1 )
-        throw std::range_error("The Input out of range [-1,1]!");
+
+    if( m_NormParameter == 0)
+        throw std::runtime_error("The Normalized Parameter can not inital!");
 
     if (m_bOffset)
     {
         //m_InputList(0) = 1 for Offset
-        m_InputList(0)  = 1;
+        m_InputList(0)  = 1/m_NormParameter;
         for (int i = 0; i< inputlist.rows(); i++)
         {
-            m_InputList(i+1) = inputlist(i);
+            m_InputList(i+1) = inputlist(i)/m_NormParameter;
         }
+        if( m_InputList.maxCoeff()>1 || m_InputList.minCoeff()<-1 )
+            throw std::range_error("The Input out of range [-1,1]!");
+        m_bInitalInputlist = true;
+
     }
     else
     {   //the Neure has not Offset
         for (int i = 0; i< inputlist.rows(); i++)
         {
-            m_InputList(i) = inputlist(i);
+            m_InputList(i) = inputlist(i)/m_NormParameter;
         }
+        if( m_InputList.maxCoeff()>1 || m_InputList.minCoeff()<-1 )
+            throw std::range_error("The Input out of range [-1,1]!");
+        m_bInitalInputlist = true;
     }
 
 }
@@ -168,6 +206,11 @@ inline void ArtificialNeure::SetWeightList( IN const Eigen::VectorXd &weightlist
 {
     m_WeightList = weightlist;
 }
+inline void ArtificialNeure::SetNormParameter( IN const double normparameter )
+{
+    m_NormParameter = normparameter;
+}
+
 /*****************************/
 inline bool ArtificialNeure::GetbOffset() const
 {
@@ -183,6 +226,46 @@ inline int ArtificialNeure::GetWeightNum() const
 }
 inline void ArtificialNeure::GetInputList( OUT Eigen::VectorXd &inputlist) const
 {
+    if( m_NormParameter == 0)
+        throw std::runtime_error("The Normalized Parameter can not inital!");
+    if( !m_bInitalInputlist )
+        throw std::runtime_error("The Inputlist has not initaled !");
+
+    if (m_bOffset)
+    {
+        //m_InputList(0) = 1 for Offset
+        inputlist.resize(m_InputList.rows()-1);
+        for (int i = 0; i< (m_InputList.rows()-1); i++)
+        {
+            inputlist(i) = m_InputList(i+1) * m_NormParameter;
+        }
+    }
+    else
+    {
+        //the Neure has not Offset
+        inputlist.resize(m_InputList.rows());
+        for (int i = 0; i< m_InputList.rows(); i++)
+        {
+            inputlist(i) = m_InputList(i) * m_NormParameter;
+        }
+    }
+
+
+}
+inline void ArtificialNeure::GetTotalInputList( OUT Eigen::VectorXd &inputlist) const
+{
+    if( m_NormParameter == 0)
+        throw std::runtime_error("The Normalized Parameter can not inital!");
+    if( !m_bInitalInputlist )
+        throw std::runtime_error("The Inputlist has not initaled !");
+
+    inputlist = m_InputList * m_NormParameter;
+}
+inline void ArtificialNeure::GetNormInputList( OUT Eigen::VectorXd &inputlist) const
+{
+    if( !m_bInitalInputlist )
+        throw std::runtime_error("The Inputlist has not initaled !");
+
     if (m_bOffset)
     {
         //m_InputList(0) = 1 for Offset
@@ -202,14 +285,22 @@ inline void ArtificialNeure::GetInputList( OUT Eigen::VectorXd &inputlist) const
         }
     }
 
+
 }
-inline void ArtificialNeure::GetTotalInputList( OUT Eigen::VectorXd &inputlist) const
+inline void ArtificialNeure::GetTotalNormInputList( OUT Eigen::VectorXd &inputlist) const
 {
+    if( !m_bInitalInputlist )
+        throw std::runtime_error("The Inputlist has not initaled !");
+
     inputlist = m_InputList;
 }
 inline void ArtificialNeure::GetWeightList( OUT Eigen::VectorXd &weightlist) const
 {
     weightlist = m_WeightList;
+}
+inline double ArtificialNeure::GetNormParameter() const
+{
+    return m_NormParameter;
 }
 /*****************************/
 inline double ArtificialNeure::NeureOutput() const

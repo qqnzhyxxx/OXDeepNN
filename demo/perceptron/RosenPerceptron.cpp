@@ -52,46 +52,48 @@ int main(int argc, char *argv[])
 
     cout<<"normparameter = "<<normparameter<<endl;
     // set initial weightlist
-    Vector3d weightlist;// = Vector3d::Random();
-    weightlist(0) = -0.888 ;
-    weightlist(1) = 3.222;
-    weightlist(2) = 3.222;
-    //weightlist = Vector3d::Random();
-    cout<<"inital_weightlist =\n"<<weightlist<<endl;
-    // start to train
+    Vector3d weightlist ;
+    Vector3d initalweightlist = Vector3d::Random();;
+//    weightlist(0) = -1 ;
+//    weightlist(1) = 0.25;
+//    weightlist(2) = 0.25;
+    weightlist = initalweightlist;
+
+    cout<<"inital_weightlist =\n"<<initalweightlist<<endl;
+
     // set an artificial neure
     ArtificialNeure *neure = new ArtificialNeure(SignumEnum, 2, true);
-    neure->SetWeightList(weightlist);
-
+    neure->SetWeightList(initalweightlist);
+    neure->SetNormParameter(normparameter);
     Vector2d inputA = Vector2d::Zero();
     Vector2d inputB = Vector2d::Zero();
     double learnrate = 0.01;
-    VectorXd totalinputlist;
-    totalinputlist.setZero(weightlist.size());
-
+    VectorXd totalnorminputlist;
+    totalnorminputlist.setZero(initalweightlist.size());
+    // start to train
     for (int i = 0; i < 100; i++)
     {
-        VectorXd totalinputlist(weightlist.size());
-        inputA(0) = classA_date(0,i)/normparameter;
-        inputA(1) = classA_date(1,i)/normparameter;
+
+        inputA(0) = classA_date(0,i);
+        inputA(1) = classA_date(1,i);
         neure->SetInputList(inputA);
 
-        neure->GetTotalInputList(totalinputlist);
-        weightlist = weightlist +learnrate * ( classA_type(i) - neure->NeureOutput() )*totalinputlist;
+        neure->GetTotalNormInputList(totalnorminputlist);
+        weightlist = weightlist +learnrate * ( classA_type(i) - neure->NeureOutput() )*totalnorminputlist;
         cout<<"inputA = \n"<< inputA<<endl;
-        cout<<"totalinputA = \n"<< totalinputlist<<endl;
+        cout<<"totalNorminputA = \n"<< totalnorminputlist<<endl;
         cout<<"NeureOutputA = "<<neure->NeureOutput()<<endl;
         cout<<"classA_type-NeureOutput = "<< ( classA_type(i) - neure->NeureOutput() )<<endl;
         cout<<"A_weightlist = \n"<<weightlist<<endl;
 
-        inputB(0) = classB_date(0,i)/normparameter;
-        inputB(1) = classB_date(1,i)/normparameter;
+        inputB(0) = classB_date(0,i);
+        inputB(1) = classB_date(1,i);
         neure->SetInputList(inputB);
 
-        neure->GetTotalInputList(totalinputlist);
-        weightlist = weightlist +learnrate * ( classB_type(i) - neure->NeureOutput() )*totalinputlist;
+        neure->GetTotalInputList(totalnorminputlist);
+        weightlist = weightlist +learnrate * ( classB_type(i) - neure->NeureOutput() )*totalnorminputlist;
         cout<<"inputB = \n"<< inputB<<endl;
-        cout<<"totalinputB = \n"<< totalinputlist<<endl;
+        cout<<"totalNorminputB = \n"<< totalnorminputlist<<endl;
         cout<<"NeureOutputB = "<<neure->NeureOutput()<<endl;
         cout<<"classB_type-NeureOutput = "<< ( classB_type(i) - neure->NeureOutput() )<<endl;
         cout<<"B_weightlist = \n"<<weightlist<<endl;
@@ -141,9 +143,6 @@ int main(int argc, char *argv[])
     customPlot.graph(1)->setName("classB_date");
 
     QVector<double> x3(5), y3(5);
-//    weightlist(0) = -0.888 ;
-//    weightlist(1) = 0.222;
-//    weightlist(2) = 0.222;
     weightlist = normparameter*weightlist;
     for (int i=0; i<5; i++)
     {
@@ -156,6 +155,21 @@ int main(int argc, char *argv[])
     customPlot.graph(2)->setLineStyle(QCPGraph::lsLine);//lsStepCenter
 
     customPlot.graph(2)->setName("Decision boundary");
+
+    QVector<double> x4(5), y4(5);
+
+    initalweightlist = normparameter*initalweightlist;
+    for (int i=0; i<5; i++)
+    {
+      x4[i] =i;
+      y4[i] =(-1*x4[i]*initalweightlist(1)/initalweightlist(2) - initalweightlist(0)/initalweightlist(2));
+    }
+    customPlot.addGraph(customPlot.xAxis,customPlot.yAxis);
+    customPlot.graph(3)->setPen(QColor(150, 50, 50, 255));
+    customPlot.graph(3)->setData(x4, y4);
+    customPlot.graph(3)->setLineStyle(QCPGraph::lsLine);//lsStepCenter
+
+    customPlot.graph(3)->setName("inital boundary");
 
     customPlot.rescaleAxes();
     window->setGeometry(100, 100, 500, 400);
