@@ -53,10 +53,12 @@ int main(int argc, char *argv[])
     cout<<"normparameter = "<<normparameter<<endl;
     // set initial weightlist
     Vector3d weightlist ;
-    Vector3d initalweightlist = Vector3d::Random();;
-//    weightlist(0) = -1 ;
-//    weightlist(1) = 0.25;
-//    weightlist(2) = 0.25;
+    Vector3d initalweightlist = Vector3d::Random();
+    //initalweightlist = Vector3d::Random();
+    //initalweightlist = Vector3d::Random();
+    initalweightlist(0) = -1.5 ;
+    initalweightlist(1) = 0.25;
+    initalweightlist(2) = 0.25;
     weightlist = initalweightlist;
 
     cout<<"inital_weightlist =\n"<<initalweightlist<<endl;
@@ -67,38 +69,51 @@ int main(int argc, char *argv[])
     neure->SetNormParameter(normparameter);
     Vector2d inputA = Vector2d::Zero();
     Vector2d inputB = Vector2d::Zero();
-    double learnrate = 0.01;
+    double learnrate = 0.005;
     VectorXd totalnorminputlist;
     totalnorminputlist.setZero(initalweightlist.size());
     // start to train
-    for (int i = 0; i < 100; i++)
+    int looptimes = 0;
+    VectorXd deviation;
+    deviation.setZero(initalweightlist.size());
+    do
     {
+        looptimes++;
+        for (int i = 0; i < 100; i++)
+        {
 
-        inputA(0) = classA_date(0,i);
-        inputA(1) = classA_date(1,i);
-        neure->SetInputList(inputA);
+            inputA(0) = classA_date(0,i);
+            inputA(1) = classA_date(1,i);
+            neure->SetInputList(inputA);
 
-        neure->GetTotalNormInputList(totalnorminputlist);
-        weightlist = weightlist +learnrate * ( classA_type(i) - neure->NeureOutput() )*totalnorminputlist;
-        cout<<"inputA = \n"<< inputA<<endl;
-        cout<<"totalNorminputA = \n"<< totalnorminputlist<<endl;
-        cout<<"NeureOutputA = "<<neure->NeureOutput()<<endl;
-        cout<<"classA_type-NeureOutput = "<< ( classA_type(i) - neure->NeureOutput() )<<endl;
-        cout<<"A_weightlist = \n"<<weightlist<<endl;
+            neure->GetTotalNormInputList(totalnorminputlist);
+            deviation = ( classA_type(i) - neure->NeureOutput() )*totalnorminputlist;
+            weightlist = weightlist +learnrate *deviation;
 
-        inputB(0) = classB_date(0,i);
-        inputB(1) = classB_date(1,i);
-        neure->SetInputList(inputB);
+            cout<<"inputA = \n"<< inputA<<endl;
+            cout<<"totalNorminputA = \n"<< totalnorminputlist<<endl;
+            cout<<"NeureOutputA = "<<neure->NeureOutput()<<endl;
+            cout<<"classA_type-NeureOutput = "<< ( classA_type(i) - neure->NeureOutput() )<<endl;
+            cout<<"A_weightlist = \n"<<weightlist<<endl;
+            cout<<"The deviation norm = "<<deviation.norm()<<endl;
 
-        neure->GetTotalInputList(totalnorminputlist);
-        weightlist = weightlist +learnrate * ( classB_type(i) - neure->NeureOutput() )*totalnorminputlist;
-        cout<<"inputB = \n"<< inputB<<endl;
-        cout<<"totalNorminputB = \n"<< totalnorminputlist<<endl;
-        cout<<"NeureOutputB = "<<neure->NeureOutput()<<endl;
-        cout<<"classB_type-NeureOutput = "<< ( classB_type(i) - neure->NeureOutput() )<<endl;
-        cout<<"B_weightlist = \n"<<weightlist<<endl;
-    }
+            inputB(0) = classB_date(0,i);
+            inputB(1) = classB_date(1,i);
+            neure->SetInputList(inputB);
 
+            neure->GetTotalInputList(totalnorminputlist);
+            deviation = ( classB_type(i) - neure->NeureOutput() )*totalnorminputlist;
+            weightlist = weightlist +learnrate *deviation;
+            cout<<"inputB = \n"<< inputB<<endl;
+            cout<<"totalNorminputB = \n"<< totalnorminputlist<<endl;
+            cout<<"NeureOutputB = "<<neure->NeureOutput()<<endl;
+            cout<<"classB_type-NeureOutput = "<< ( classB_type(i) - neure->NeureOutput() )<<endl;
+            cout<<"B_weightlist = \n"<<weightlist<<endl;
+            cout<<"The deviation norm = "<<deviation.norm()<<endl;
+        }
+
+    }while((deviation.norm() > 0.1) && looptimes<= 500  );
+    cout<<"number of loop times = "<<looptimes<<endl;
 
 
     /* *********display result************/
