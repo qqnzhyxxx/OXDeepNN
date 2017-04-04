@@ -36,7 +36,7 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     cout << "C++ standard version(__cplusplus)=" << __cplusplus  <<endl;
-
+/*
     ArtificialNeure *myNeure = new ArtificialNeure(HeavisideEnum, 2, true);
     Eigen::Vector2d invec(1,0.3);
     Eigen::Vector3d weivec1(10,11,12);
@@ -50,10 +50,10 @@ int main(int argc, char *argv[])
     myNeure->GetWeightList(weioutvec);
     cout<<"myNeure->GetInputList(outvec) = \n"<<outvec<<endl;
     cout<<"myNeure->GetWeightList(weioutvec) = \n"<<weioutvec<<endl;
-
+*/
 
     /* *********set up gui************/
-    QApplication app(argc, argv);
+/*  QApplication app(argc, argv);
     QMainWindow *window = new QMainWindow;
     if (window->objectName().isEmpty())
         window->setObjectName(QStringLiteral("MainWindow"));
@@ -89,7 +89,7 @@ int main(int argc, char *argv[])
 
 
     return app.exec();
-
-
-    //return 0;
+    */
+    cout<<"Build completed!"<<endl;
+    return 0;
 }

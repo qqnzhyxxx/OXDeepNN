@@ -105,6 +105,10 @@ public:
     /// @input  <gsl_vector> *inputlist
     /// @return <void>
     inline void GetInputList( OUT Eigen::VectorXd &inputlist ) const;
+    /// @brief  Get Total Artificial Neure Input Vector
+    /// @input  <gsl_vector> *inputlist
+    /// @return <void>
+    inline void GetTotalInputList( OUT Eigen::VectorXd &inputlist ) const;
     /// @brief  Get The Number of Artificial Neure Weight Vector(Decided by InputNum)
     /// @input  <void>
     /// @return <void>
@@ -159,6 +163,7 @@ inline void ArtificialNeure::SetInputList( IN const Eigen::VectorXd &inputlist)
     }
 
 }
+
 inline void ArtificialNeure::SetWeightList( IN const Eigen::VectorXd &weightlist)
 {
     m_WeightList = weightlist;
@@ -197,6 +202,10 @@ inline void ArtificialNeure::GetInputList( OUT Eigen::VectorXd &inputlist) const
         }
     }
 
+}
+inline void ArtificialNeure::GetTotalInputList( OUT Eigen::VectorXd &inputlist) const
+{
+    inputlist = m_InputList;
 }
 inline void ArtificialNeure::GetWeightList( OUT Eigen::VectorXd &weightlist) const
 {

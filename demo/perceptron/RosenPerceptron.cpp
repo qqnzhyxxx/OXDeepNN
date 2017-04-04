@@ -4,6 +4,7 @@
 #include "Enumeration.h"
 #include <QApplication>
 #include <Eigen/Eigen>
+#include <cmath>
 using namespace std;
 using namespace Eigen;
 /*************************************************
@@ -23,19 +24,78 @@ int main(int argc, char *argv[])
     MatrixXd classB_date =  MatrixXd::Random(2,100);
     VectorXd classB_type;
     classB_type.setOnes(100);
-    //classB_type= VectorXi::Ones();
+
     classB_type = -1 * classB_type;
+    cout<<"classA_type="<<classA_type(0)<<endl;
+    cout<<"classB_type="<<classB_type(0)<<endl;
+
     classA_date = classA_date + MatrixXd::Constant(2,100,3.5);
     classB_date = classB_date + MatrixXd::Constant(2,100,1);
-    // set an artificial neure
-    ArtificialNeure *neure = new ArtificialNeure(SignumEnum, 2, false);
     // set Normalization parameters
-    double classA_normparameter = classA_date.maxCoeff();
-    double classB_normparameter = classB_date.maxCoeff();
+    double classA_normparameter = 0;
+    if( abs(classA_date.maxCoeff()) >= abs(classA_date.minCoeff()) )
+        classA_normparameter =abs(classA_date.maxCoeff());
+    else
+        classA_normparameter = abs(classA_date.minCoeff());
+    double classB_normparameter = 0;
+
+    if( abs(classB_date.maxCoeff()) >= abs(classB_date.minCoeff()) )
+        classB_normparameter =abs(classB_date.maxCoeff());
+    else
+        classB_normparameter = abs(classB_date.minCoeff());
+
+    double normparameter = 0;
+    if(classA_normparameter >= classB_normparameter)
+        normparameter = classA_normparameter;
+    else
+        normparameter = classB_normparameter;
+
+    cout<<"normparameter = "<<normparameter<<endl;
     // set initial weightlist
-
-
+    Vector3d weightlist;// = Vector3d::Random();
+    weightlist(0) = -0.888 ;
+    weightlist(1) = 3.222;
+    weightlist(2) = 3.222;
+    //weightlist = Vector3d::Random();
+    cout<<"inital_weightlist =\n"<<weightlist<<endl;
     // start to train
+    // set an artificial neure
+    ArtificialNeure *neure = new ArtificialNeure(SignumEnum, 2, true);
+    neure->SetWeightList(weightlist);
+
+    Vector2d inputA = Vector2d::Zero();
+    Vector2d inputB = Vector2d::Zero();
+    double learnrate = 0.01;
+    VectorXd totalinputlist;
+    totalinputlist.setZero(weightlist.size());
+
+    for (int i = 0; i < 100; i++)
+    {
+        VectorXd totalinputlist(weightlist.size());
+        inputA(0) = classA_date(0,i)/normparameter;
+        inputA(1) = classA_date(1,i)/normparameter;
+        neure->SetInputList(inputA);
+
+        neure->GetTotalInputList(totalinputlist);
+        weightlist = weightlist +learnrate * ( classA_type(i) - neure->NeureOutput() )*totalinputlist;
+        cout<<"inputA = \n"<< inputA<<endl;
+        cout<<"totalinputA = \n"<< totalinputlist<<endl;
+        cout<<"NeureOutputA = "<<neure->NeureOutput()<<endl;
+        cout<<"classA_type-NeureOutput = "<< ( classA_type(i) - neure->NeureOutput() )<<endl;
+        cout<<"A_weightlist = \n"<<weightlist<<endl;
+
+        inputB(0) = classB_date(0,i)/normparameter;
+        inputB(1) = classB_date(1,i)/normparameter;
+        neure->SetInputList(inputB);
+
+        neure->GetTotalInputList(totalinputlist);
+        weightlist = weightlist +learnrate * ( classB_type(i) - neure->NeureOutput() )*totalinputlist;
+        cout<<"inputB = \n"<< inputB<<endl;
+        cout<<"totalinputB = \n"<< totalinputlist<<endl;
+        cout<<"NeureOutputB = "<<neure->NeureOutput()<<endl;
+        cout<<"classB_type-NeureOutput = "<< ( classB_type(i) - neure->NeureOutput() )<<endl;
+        cout<<"B_weightlist = \n"<<weightlist<<endl;
+    }
 
 
 
@@ -79,8 +139,25 @@ int main(int argc, char *argv[])
     customPlot.graph(1)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle,
                                                          Qt::blue, Qt::white, 7));
     customPlot.graph(1)->setName("classB_date");
-    customPlot.rescaleAxes();
 
+    QVector<double> x3(5), y3(5);
+//    weightlist(0) = -0.888 ;
+//    weightlist(1) = 0.222;
+//    weightlist(2) = 0.222;
+    weightlist = normparameter*weightlist;
+    for (int i=0; i<5; i++)
+    {
+      x3[i] =i;
+      y3[i] =(-1*x3[i]*weightlist(1)/weightlist(2) - weightlist(0)/weightlist(2));
+    }
+    customPlot.addGraph(customPlot.xAxis,customPlot.yAxis);
+    customPlot.graph(2)->setPen(QColor(50, 50, 50, 255));
+    customPlot.graph(2)->setData(x3, y3);
+    customPlot.graph(2)->setLineStyle(QCPGraph::lsLine);//lsStepCenter
+
+    customPlot.graph(2)->setName("Decision boundary");
+
+    customPlot.rescaleAxes();
     window->setGeometry(100, 100, 500, 400);
     window->show();
 

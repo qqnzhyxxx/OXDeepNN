@@ -93,7 +93,7 @@ inline double Activatefunction::ActiveFunc ( IN double input)
         return Activatefunction::Sigmoid(input);
         break;
     case SignumEnum:
-        return Activatefunction::Sigmoid(input);
+        return Activatefunction::Signum(input);
         break;
     case TanhEnum:
         return Activatefunction::Tanh(input);
