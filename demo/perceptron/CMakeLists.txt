@@ -32,10 +32,24 @@ add_executable(${DEMO_NAME} RosenPerceptron.cpp)
 qt5_use_modules(${DEMO_NAME} Core Widgets Gui OpenGL PrintSupport)
 #
 # Set lib_dir in Environment
-set(OXDeepNN_LINK_GXX
+# Set GSL2.3 math lib <libgsl.so+libgslcblas.so>
+# Set qcustomplot2.0 QT 2D plot lib <libqcustomplot.so>
+# In Linux+GunCxx Compiler Environment
+# "sudo cp /lib/lib-linux/../*.so  /usr/local/lib"
+# "sudo ldconfig"
+set(OXDeepNN_LINK_LINUX_GXX
     ${CMAKE_INSTALL_PREFIX}/lib/libgsl.so.19
     ${CMAKE_INSTALL_PREFIX}/lib/libgslcblas.so.0
     ${CMAKE_INSTALL_PREFIX}/lib/libqcustomplot.so.2)
+# Set GSL2.3 math lib <libgsl.dylib+libgslcblas.dylib>
+# Set qcustomplot2.0 QT 2D plot lib <libqcustomplot.dylib>
+# In Mac os+GunCxx Compiler Environment
+# "sudo cp /lib/lib-mac/../*.dylib  /usr/local/lib"
+# "  export DYLD_LIBRARY_PATH="$DYLD_LIBRARY_PATH:/usr/local/lib/"   "
+set(OXDeepNN_LINK_MAC_GXX
+    ${CMAKE_INSTALL_PREFIX}/lib/libgsl.dylib
+    ${CMAKE_INSTALL_PREFIX}/lib/libgslcblas.dylib
+    ${CMAKE_INSTALL_PREFIX}/lib/libqcustomplot.dylib)
 set(OXDeepNN_LINK_MSVCLIB_RELEASE
     ${PROJECT_SOURCE_DIR}/lib/lib-windows/libGSL/libgsl-19.lib
     ${PROJECT_SOURCE_DIR}/lib/lib-windows/libGSL/libgslcblas-0.lib
@@ -55,9 +69,12 @@ set(OXDeepNN_LINK_MSVCDLL_DEBUG
 # Set lib in Linux+GunCxx Compiler Environment
 IF (CMAKE_SYSTEM_NAME MATCHES "Linux")
     if(CMAKE_COMPILER_IS_GNUCXX)
-        MESSAGE(STATUS "#DEMO#COMPILER_IS_GNUCXX")
-        target_link_libraries(${DEMO_NAME} ${OXDeepNN_LINK_GXX})
+        MESSAGE(STATUS "#COMPILER_IS_LINUX_GNUCXX")
+        target_link_libraries(${DEMO_NAME} ${OXDeepNN_LINK_LINUX_GXX})
     endif()
+ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Darwin")
+        MESSAGE(STATUS "#SYSTEM_NAME_IS_MAC_Darwin")
+        target_link_libraries(${DEMO_NAME} ${OXDeepNN_LINK_MAC_GXX})
 # Set lib in Windows Compiler Environment
 ELSEIF (CMAKE_SYSTEM_NAME MATCHES "Windows")
     if(MSVC)
