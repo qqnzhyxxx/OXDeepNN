@@ -9,6 +9,6 @@
 
 **Windows下使用Cmake-gui自动安装**
 
-**Linux下将动态库*.so导入/usr/local/lib，运行命令“sudo ldconfig”**
+**Linux下将动态库*.so导入/usr/local/lib，运行命令“sudo ldconfig” **
 
-**Mac OS下将动态库*.dylib 导入/usr/local/lib，运行命令“export DYLD_LIBRARY_PATH="$DYLD_LIBRARY_PATH:/usr/local/lib/"”**
+**Mac OS下将动态库*.dylib 导入/usr/local/lib，运行命令“export DYLD_LIBRARY_PATH="$DYLD_LIBRARY_PATH:/usr/local/lib/"”  **
