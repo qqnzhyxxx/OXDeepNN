@@ -88,9 +88,9 @@ set(OXDeepNN_LINK_LINUX_GXX
 # "sudo cp /lib/lib-mac/../*.dylib  /usr/local/lib"
 # "  export DYLD_LIBRARY_PATH="$DYLD_LIBRARY_PATH:/usr/local/lib/"   "
 set(OXDeepNN_LINK_MAC_GXX
-    ${CMAKE_INSTALL_PREFIX}/lib/libgsl.dylib
-    ${CMAKE_INSTALL_PREFIX}/lib/libgslcblas.dylib
-    ${CMAKE_INSTALL_PREFIX}/lib/libqcustomplot.dylib)
+    ${CMAKE_INSTALL_PREFIX}/lib/libgsl.19.dylib
+    ${CMAKE_INSTALL_PREFIX}/lib/libgslcblas.0.dylib
+    ${CMAKE_INSTALL_PREFIX}/lib/libqcustomplot.2.0.0.dylib)
 set(OXDeepNN_LINK_MSVCLIB_RELEASE
     ${PROJECT_SOURCE_DIR}/lib/lib-windows/libGSL/libgsl-19.lib
     ${PROJECT_SOURCE_DIR}/lib/lib-windows/libGSL/libgslcblas-0.lib
