@@ -2,7 +2,7 @@
 #                                                #
 # Copyright (C) 2017  Niu Zhiyong (China)        #
 # <tbnzhyxxx@163.com>                            #
-#                                                #
+# Update:2017.04.08 1:53                                               #
 #************************************************#
 cmake_minimum_required(VERSION 2.8.11)
 message(STATUS "#CMAKE_VERSION=${CMAKE_VERSION}")
