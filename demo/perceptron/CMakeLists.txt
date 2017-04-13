@@ -27,7 +27,9 @@ endif()
 message(STATUS "#DEMO#Qt5Widgets_VERSION=${Qt5Widgets_VERSION}")
 # Set source file to make executable
 #add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp )
-add_executable(${DEMO_NAME} RosenPerceptron.cpp)
+add_executable(${DEMO_NAME} RosenPerceptron.cpp
+    ${PROJECT_SOURCE_DIR}/src/solver/Perceptronsolver.cpp
+    ${PROJECT_SOURCE_DIR}/src/solver/LMSsolver.cpp)
 # Set QT5 module which we used
 qt5_use_modules(${DEMO_NAME} Core Widgets Gui OpenGL PrintSupport)
 #

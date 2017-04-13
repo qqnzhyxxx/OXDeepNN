@@ -2,6 +2,8 @@
 #include "QTplot/qcustomplot.h"
 #include "ArtificialNeure.h"
 #include "Enumeration.h"
+#include "solver/Perceptronsolver.h"
+#include "solver/LMSsolver.h"
 #include <QApplication>
 #include <Eigen/Eigen>
 #include <cmath>
@@ -52,14 +54,13 @@ int main(int argc, char *argv[])
 
     cout<<"normparameter = "<<normparameter<<endl;
     // set initial weightlist
-    Vector3d weightlist ;
+    VectorXd weightlistout ;
     Vector3d initalweightlist = Vector3d::Random();
     initalweightlist = Vector3d::Random();
     //initalweightlist = Vector3d::Random();
     //initalweightlist(0) = 0;//-1.5 ;
     //initalweightlist(1) = 0;//0.25;
     //initalweightlist(2) = 0;//0.25;
-    weightlist = initalweightlist;
 
     cout<<"inital_weightlist =\n"<<initalweightlist<<endl;
 
@@ -74,44 +75,35 @@ int main(int argc, char *argv[])
     totalnorminputlist.setZero(initalweightlist.size());
     // start to train
     int looptimes = 0;
-    VectorXd deviation;
-    double mindeviationnorm = 1000000;
-    deviation.setZero(initalweightlist.size());
+    LMSsolver lmssolver;
+    Perceptronsolver persolver;
+
     do
     {
         looptimes++;
         for (int i = 0; i < 100; i++)
         {
+            double outerror = 0;
 
             inputA(0) = classA_date(0,i);
             inputA(1) = classA_date(1,i);
             neure->SetInputList(inputA);
 
+            //outerror = persolver.Sovler(neure, classA_type(i) , learnrate);
+            outerror = lmssolver.Solver(neure, classA_type(i) , learnrate);
             neure->GetTotalNormInputList(totalnorminputlist);
-            deviation = ( classA_type(i) - neure->NeureOutput() )*totalnorminputlist;
-            weightlist = weightlist +learnrate *deviation;
-            neure->SetWeightList(weightlist);
-            cout<<"inputA = \n"<< inputA<<endl;
-            cout<<"totalNorminputA = \n"<< totalnorminputlist<<endl;
-            cout<<"NeureOutputA = "<<neure->NeureOutput()<<endl;
-            cout<<"classA_type-NeureOutput = "<< ( classA_type(i) - neure->NeureOutput() )<<endl;
-            cout<<"A_weightlist = \n"<<weightlist<<endl;
-            cout<<"The deviation norm = "<<deviation.norm()<<endl;
+            neure->GetWeightList(weightlistout);
+            cout<<"The outerror  = "<<outerror<<endl;
 
             inputB(0) = classB_date(0,i);
             inputB(1) = classB_date(1,i);
             neure->SetInputList(inputB);
-
+            //outerror = persolver.Sovler(neure, classB_type(i) , learnrate);
+            outerror = lmssolver.Solver(neure, classB_type(i) , learnrate);
             neure->GetTotalNormInputList(totalnorminputlist);
-            deviation = ( classB_type(i) - neure->NeureOutput() )*totalnorminputlist;
-            weightlist = weightlist +learnrate *deviation;
-            neure->SetWeightList(weightlist);
-            cout<<"inputB = \n"<< inputB<<endl;
-            cout<<"totalNorminputB = \n"<< totalnorminputlist<<endl;
-            cout<<"NeureOutputB = "<<neure->NeureOutput()<<endl;
-            cout<<"classB_type-NeureOutput = "<< ( classB_type(i) - neure->NeureOutput() )<<endl;
-            cout<<"B_weightlist = \n"<<weightlist<<endl;
-            cout<<"The deviation norm = "<<deviation.norm()<<endl;
+            neure->GetWeightList(weightlistout);
+            cout<<"The outerror  = "<<outerror<<endl;
+
         }   
 
     }while( looptimes<= 50  );
@@ -160,11 +152,11 @@ int main(int argc, char *argv[])
     customPlot.graph(1)->setName("classB_date");
 
     QVector<double> x3(5), y3(5);
-    weightlist = normparameter*weightlist;
+    weightlistout = normparameter*weightlistout;
     for (int i=0; i<5; i++)
     {
       x3[i] =i;
-      y3[i] =(-1*x3[i]*weightlist(1)/weightlist(2) - weightlist(0)/weightlist(2));
+      y3[i] =(-1*x3[i]*weightlistout(1)/weightlistout(2) - weightlistout(0)/weightlistout(2));
     }
     customPlot.addGraph(customPlot.xAxis,customPlot.yAxis);
     customPlot.graph(2)->setPen(QColor(50, 50, 50, 255));
@@ -195,7 +187,7 @@ int main(int argc, char *argv[])
     window->show();
 
 
-
+    delete neure;
     return app.exec();
     //return 0;
 }

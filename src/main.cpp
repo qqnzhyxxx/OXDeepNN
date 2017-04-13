@@ -36,7 +36,14 @@ using namespace std;
 int main(int argc, char *argv[])
 {
     cout << "C++ standard version(__cplusplus)=" << __cplusplus  <<endl;
-/*
+/*  Eigen::Vector3d V1;
+    Eigen::VectorXd V2;
+    V1 = Eigen::Vector3d::Random();
+    V2 = V1;
+    cout<<"V1 = \n"<<V1<<endl;
+    cout<<"V2 = \n"<<V2<<endl;
+    cout<<"V2 size = \n"<<V2.size()<<endl;
+
     ArtificialNeure *myNeure = new ArtificialNeure(HeavisideEnum, 2, true);
     Eigen::Vector2d invec(1,0.3);
     Eigen::Vector3d weivec1(10,11,12);
