@@ -12,7 +12,7 @@ include(CheckCXXSourceCompiles)
 include(CheckLibraryExists)
 include(CPack)
 enable_testing()
-
+#
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed
