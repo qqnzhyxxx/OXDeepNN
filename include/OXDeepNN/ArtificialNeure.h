@@ -50,6 +50,7 @@ public:
             m_InputList.resize(m_InputNum);
             m_WeightList.resize(m_WeightNum);
             m_NormParameter = 0;
+            m_InducedLocalField = 0;
             m_bInitalInputlist = false;
         }
     }
@@ -64,6 +65,7 @@ protected:
     int                     m_WeightNum;            /*equal m_InputNum*/
     int                     m_InputNum;             /*equal m_WeightNum*/
     double                  m_NormParameter;        /*Normalized parameter*/
+    double                  m_InducedLocalField;    /* Induced local fields*/
     Activatefunction        *m_pActiveFun;          /*Activate Function*/
     VectorXd                m_WeightList;           /*神经元权重向量Row Vector */
     VectorXd                m_InputList;            /*神经元输入参数Column Vector */
@@ -150,7 +152,7 @@ public:
     /// @brief  Artificial Neure Activation Produces Output
     /// @input  <void>
     /// @return <double> Output of one Artificial Neure
-    inline double NeureOutput() const;
+    inline double NeureOutput();
 
 };
 /* Function implementation */
@@ -303,7 +305,8 @@ inline double ArtificialNeure::GetNormParameter() const
     return m_NormParameter;
 }
 /*****************************/
-inline double ArtificialNeure::NeureOutput() const
+inline double ArtificialNeure::NeureOutput()
 {
-    return ( m_pActiveFun->ActiveFunc( m_WeightList.dot(m_InputList) ) );
+    m_InducedLocalField = m_WeightList.dot(m_InputList) ;
+    return ( m_pActiveFun->ActiveFunc( m_InducedLocalField ) );
 }
