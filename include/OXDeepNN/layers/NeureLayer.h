@@ -18,19 +18,55 @@
 Class type: Class of Basis  Neure Layer
 Author: Niu ZhiYong
 Date: 2017-03-29
-Description:
-This class defind the Artificial Neure Layer property.
+Description: Father Class of Neure Layer.
+This class defind the Basic Artificial Neure Layer property.
+Each layer of the neural network has two actions,
+namely forward propagation and backward propagation
+Forward propagation to get the output,
+Backward propapation to get the error gradients,
+and fix the weight of neuros.
 **************************************************/
 #pragma once
+
+#include <vector>
+#include <memory>
+#include "ArtificialNeure.h"
+#include "Enumeration.h"
+#include "Macros.h"
+#include <Eigen/Eigen>
+
+using namespace std;
+using namespace Eigen;
 
 class NeureLayer
 {
 public:
-    NeureLayer();
+    NeureLayer(IN int neurenumber , IN EnumActiveFunction functype ,
+               IN int inputnum ,IN bool boffset);
     virtual ~NeureLayer(void);
 
 public:
+    /// @brief  Forward Propagation Function
+    /// @input  <bool> boffset
+    /// @return <void>
+    vector< shared_ptr<ArtificialNeure> > GetNeureList() const;
 
-protected:
+    /// @brief  Forward Propagation Function
+    /// @input  <bool> boffset
+    /// @return <void>
+    virtual void ForwardPropagate();
+
+    /// @brief  Backward Propagation Function
+    /// @input  <bool> boffset
+    /// @return <void>
+    virtual void BackwardPropagete();
+
+
+public:
+    int                                       m_NeureNumber;    /*the number of neures in layer*/
+    vector< shared_ptr<ArtificialNeure> >     m_pNeureList;     /*to store the neures in layer */
+    vector< shared_ptr<double> >              m_LayerOutputList;/*to store the output of this layer*/
+    ArtificialNeure*                          m_pNeuro;         /*pointor to Neuro in m_NeuroList*/
+
 
 };
