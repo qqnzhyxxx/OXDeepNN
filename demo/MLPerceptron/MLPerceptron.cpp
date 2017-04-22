@@ -17,6 +17,6 @@ int main(int argc, char *argv[])
     cout<<"MLPerceptron Test"<<endl;
     shared_ptr< NeureLayer > layer = make_shared<NeureLayer>(NeureLayer(1,SigmoidEnum,2,true));
 
-    int i = (layer->GetNeureList()).at(0)->GetInputNum();
+    int i = layer->NeureList().at(0)->GetInputNum();
     cout<<"m_InputNum = "<<i<<endl;
 }

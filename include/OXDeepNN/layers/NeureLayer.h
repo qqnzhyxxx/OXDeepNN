@@ -45,12 +45,26 @@ public:
                IN int inputnum ,IN bool boffset);
     virtual ~NeureLayer(void);
 
+protected:
+    int                                       m_NeureNumber;    /*the number of neures in layer*/
+    vector< shared_ptr<ArtificialNeure> >     m_pNeureList;     /*to store the neures in layer */
+    VectorXd                                  m_LayerOutputList;/*to store the output of this layer*/
+
 public:
+    /// @brief  Get Neure List in the layer outside the object
+    /// @input  <void>
+    /// @return <void>
+    vector< shared_ptr<ArtificialNeure> > NeureList() const;
+
+    /// @brief  Get Output List of the layer outside the object
+    /// @input  <void>
+    /// @return <void>
+    VectorXd LayerOutputList() const;
+
     /// @brief  Forward Propagation Function
     /// @input  <bool> boffset
     /// @return <void>
-    vector< shared_ptr<ArtificialNeure> > GetNeureList() const;
-
+    virtual void Inital();
     /// @brief  Forward Propagation Function
     /// @input  <bool> boffset
     /// @return <void>
@@ -62,11 +76,6 @@ public:
     virtual void BackwardPropagete();
 
 
-public:
-    int                                       m_NeureNumber;    /*the number of neures in layer*/
-    vector< shared_ptr<ArtificialNeure> >     m_pNeureList;     /*to store the neures in layer */
-    vector< shared_ptr<double> >              m_LayerOutputList;/*to store the output of this layer*/
-    ArtificialNeure*                          m_pNeuro;         /*pointor to Neuro in m_NeuroList*/
 
 
 };

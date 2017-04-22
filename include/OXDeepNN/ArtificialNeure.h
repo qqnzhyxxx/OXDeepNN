@@ -37,7 +37,7 @@ class ArtificialNeure
 public:
 
     /// @param[in] inputNum >= 1
-    ArtificialNeure(IN EnumActiveFunction functype, IN int inputnum, IN bool boffset)
+    ArtificialNeure(IN EnumActiveFunction functype, IN int inputnum, IN bool boffset = true)
     {
         if(inputnum <1)
             throw std::runtime_error("The Input Number < 1!");
