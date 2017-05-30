@@ -31,6 +31,8 @@ add_subdirectory(include)
 add_subdirectory(src)
 add_subdirectory(lib)
 add_subdirectory(demo demo_bin)
+add_subdirectory(python python)
+add_subdirectory(pybind11)
 # Set the path to build projcet
 set(CMAKE_BINARY_DIR "${PROJECT_SOURCE_DIR}/bin")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${PROJECT_SOURCE_DIR}/bin")
