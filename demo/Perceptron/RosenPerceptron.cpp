@@ -1,5 +1,5 @@
 #include <iostream>
-#include "QTplot/qcustomplot.h"
+#include "qcustomplot.h"
 #include "ArtificialNeure.h"
 #include "Enumeration.h"
 #include "solver/Perceptronsolver.h"

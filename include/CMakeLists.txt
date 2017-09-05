@@ -1,5 +1,4 @@
-cmake_minimum_required(VERSION 2.8.11)
-add_subdirectory(gsl)
+cmake_minimum_required(VERSION 3.8.0)
 add_subdirectory(Eigen)
 add_subdirectory(OXDeepNN)
 

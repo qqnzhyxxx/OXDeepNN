@@ -1,6 +1,5 @@
 #include <iostream>
 
-#include "QTplot/qcustomplot.h"
 #include "ArtificialNeure.h"
 #include "Enumeration.h"
 #include <QApplication>

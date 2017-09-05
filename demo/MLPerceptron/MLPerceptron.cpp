@@ -1,6 +1,6 @@
 #include <iostream>
 #include <memory>
-#include "QTplot/qcustomplot.h"
+#include "qcustomplot.h"
 #include "layers/NeureLayer.h"
 #include "Enumeration.h"
 #include <QApplication>
