@@ -15,9 +15,10 @@ set(CMAKE_CXX_STANDARD 14)
 #
 # Set src file list
 aux_source_directory (${PROJECT_SOURCE_DIR}/source/ SRC_LIST)
+aux_source_directory (${PROJECT_SOURCE_DIR}/qcustomplot/ PLOT_LIST)
 #
 # Set Include h file path
-set(OXDeepNN_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/source
+set(OXDeepNN_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/qcustomplot
                         ${PROJECT_SOURCE_DIR}/include
                         ${PROJECT_SOURCE_DIR}/include/OXDeepNN)
 #INCLUDE_DIRECTORIES(include/ include/OXDeepNN)
@@ -36,6 +37,7 @@ endif()
 # Set folder in project dir
 add_subdirectory(include)
 add_subdirectory(source)
+add_subdirectory(qcustomplot)
 add_subdirectory(demo demo_bin)
 add_subdirectory(python python)
 add_subdirectory(pybind11)
@@ -67,7 +69,7 @@ endif()
 message(STATUS "#Qt5Widgets_VERSION=${Qt5Widgets_VERSION}")
 # Set source file to make executable
 #add_executable(${PROJECT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/source/main.cpp )
-add_executable(${PROJECT_NAME} ${SRC_LIST})
+add_executable(${PROJECT_NAME} ${SRC_LIST} ${PLOT_LIST})
 #
 # Set QT5 module which we used
 qt5_use_modules(${PROJECT_NAME} Core Widgets Gui OpenGL PrintSupport)

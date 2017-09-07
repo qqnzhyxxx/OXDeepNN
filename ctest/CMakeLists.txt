@@ -13,7 +13,7 @@ include(CPack)
 enable_testing()
 # Set Include h file path
 #INCLUDE_DIRECTORIES(${PROJECT_SOURCE_DIR}/include/  ${PROJECT_SOURCE_DIR}/include/OXDeepNN)
-set(OXDeepNN_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/source
+set(OXDeepNN_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/qcustomplot
                         ${PROJECT_SOURCE_DIR}/include
                         ${PROJECT_SOURCE_DIR}/include/OXDeepNN)
 INCLUDE_DIRECTORIES(${OXDeepNN_INCLUDE_DIR})

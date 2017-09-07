@@ -7,7 +7,7 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed
 set(CMAKE_AUTOMOC ON)
 # Add Qt module in project
-set(OXDeepNN_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/source
+set(OXDeepNN_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/qcustomplot
                         ${PROJECT_SOURCE_DIR}/include
                         ${PROJECT_SOURCE_DIR}/include/OXDeepNN)
 INCLUDE_DIRECTORIES(${OXDeepNN_INCLUDE_DIR})
@@ -33,7 +33,7 @@ message(STATUS "#DEMO#Qt5Widgets_VERSION=${Qt5Widgets_VERSION}")
 add_executable(${DEMO_NAME} RosenPerceptron.cpp
     ${PROJECT_SOURCE_DIR}/source/solver/Perceptronsolver.cpp
     ${PROJECT_SOURCE_DIR}/source/solver/LMSsolver.cpp
-    ${PROJECT_SOURCE_DIR}/source/qcustomplot.cpp)
+    ${PROJECT_SOURCE_DIR}/qcustomplot/qcustomplot.cpp)
 # Set QT5 module which we used
 qt5_use_modules(${DEMO_NAME} Core Widgets Gui OpenGL PrintSupport)
 

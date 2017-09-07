@@ -179,7 +179,7 @@ int main(int argc, char *argv[])
     customPlot.graph(3)->setLineStyle(QCPGraph::lsLine);//lsStepCenter
 
     customPlot.graph(3)->setName("inital boundary");
-    // 设置坐标轴的范围，以看到所有数据
+    // set Axis range
     customPlot.xAxis->setRange(0, 5);
     customPlot.yAxis->setRange(0, 5);
     //customPlot.rescaleAxes();
