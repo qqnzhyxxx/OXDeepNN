@@ -22,7 +22,8 @@ Description:
 This class defind the one step Solver of
 Perceptron convergence algorithm.
 **************************************************/
-#pragma once
+#ifndef PERCEPTRONSOLVER_H
+#define PERCEPTRONSOLVER_H
 
 #include <Eigen/Eigen>
 #include "Macros.h"
@@ -40,7 +41,7 @@ public:
     double Sovler(INOUT ArtificialNeure *pneure, IN double expectoutput, IN double learnrate);
 };
 
-
+#endif //PERCEPTRONSOLVER_H
 
 
 

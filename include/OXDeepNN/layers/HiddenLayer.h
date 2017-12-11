@@ -20,4 +20,8 @@ Author: Niu ZhiYong
 Date: 2017-04-21
 Description: 
 **************************************************/
-#pragma once
+#ifndef HIDDENLAYER_H
+#define HIDDENLAYER_H
+
+
+#endif //HIDDENLAYER_H

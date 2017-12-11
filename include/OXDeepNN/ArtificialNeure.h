@@ -24,7 +24,8 @@ Date: 2017-03-20
 Description:
 This class defind the Artificial Neure property.
 **************************************************/
-#pragma once
+#ifndef ARTIFICIALNEURE_H
+#define ARTIFICIALNEURE_H
 
 #include <stdexcept>
 #include <Eigen/Eigen>
@@ -218,14 +219,17 @@ inline bool ArtificialNeure::GetbOffset() const
 {
     return m_bOffset;
 }
+
 inline int ArtificialNeure::GetInputNum( ) const
 {
     return m_InputNum ;
 }
+
 inline int ArtificialNeure::GetWeightNum() const
 {
     return m_WeightNum ;
 }
+
 inline void ArtificialNeure::GetInputList( OUT Eigen::VectorXd &inputlist) const
 {
     if( m_NormParameter == 0)
@@ -254,6 +258,7 @@ inline void ArtificialNeure::GetInputList( OUT Eigen::VectorXd &inputlist) const
 
 
 }
+
 inline void ArtificialNeure::GetTotalInputList( OUT Eigen::VectorXd &inputlist) const
 {
     if( m_NormParameter == 0)
@@ -263,6 +268,7 @@ inline void ArtificialNeure::GetTotalInputList( OUT Eigen::VectorXd &inputlist) 
 
     inputlist = m_InputList * m_NormParameter;
 }
+
 inline void ArtificialNeure::GetNormInputList( OUT Eigen::VectorXd &inputlist) const
 {
     if( !m_bInitalInputlist )
@@ -289,6 +295,7 @@ inline void ArtificialNeure::GetNormInputList( OUT Eigen::VectorXd &inputlist) c
 
 
 }
+
 inline void ArtificialNeure::GetTotalNormInputList( OUT Eigen::VectorXd &inputlist) const
 {
     if( !m_bInitalInputlist )
@@ -296,10 +303,12 @@ inline void ArtificialNeure::GetTotalNormInputList( OUT Eigen::VectorXd &inputli
 
     inputlist = m_InputList;
 }
+
 inline void ArtificialNeure::GetWeightList( OUT Eigen::VectorXd &weightlist) const
 {
     weightlist = m_WeightList;
 }
+
 inline double ArtificialNeure::GetNormParameter() const
 {
     return m_NormParameter;
@@ -310,3 +319,5 @@ inline double ArtificialNeure::NeureOutput()
     m_InducedLocalField = m_WeightList.dot(m_InputList) ;
     return ( m_pActiveFun->ActiveFunc( m_InducedLocalField ) );
 }
+
+#endif //ARTIFICIALNEURE_H

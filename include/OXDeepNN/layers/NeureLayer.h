@@ -26,7 +26,8 @@ Forward propagation to get the output,
 Backward propapation to get the error gradients,
 and fix the weight of neuros.
 **************************************************/
-#pragma once
+#ifndef NEURELAYER_H
+#define NEURELAYER_H
 
 #include <vector>
 #include <memory>
@@ -74,8 +75,6 @@ public:
     /// @input  <bool> boffset
     /// @return <void>
     virtual void BackwardPropagete();
-
-
-
-
 };
+
+#endif //NEURELAYER_H

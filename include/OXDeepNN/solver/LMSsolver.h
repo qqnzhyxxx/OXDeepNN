@@ -22,7 +22,8 @@ Description:
 This class defind the one step Solver of
 Least Mean Square.
 **************************************************/
-#pragma once
+#ifndef LMSOVLER_H
+#define LMSOVLER_H
 
 #include <Eigen/Eigen>
 #include "Macros.h"
@@ -41,5 +42,5 @@ public:
 
 };
 
-
+#endif //LMSOVLER_H
 

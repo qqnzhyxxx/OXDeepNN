@@ -22,7 +22,8 @@ Description:
 The input of solver,
 this Class object is to store the date of hole Net
 **************************************************/
-#pragma once
+#ifndef NETOPOLOGY_H
+#define NETOPOLOGY_H
 
 #include "layers/NeureLayer.h"
 
@@ -36,3 +37,5 @@ public:
 protected:
 
 };
+
+#endif //NETOPOLOGY_H

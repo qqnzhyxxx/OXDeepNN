@@ -17,7 +17,8 @@
 * Date:2017-03-20
 * Description:
 **************************************************/
-#pragma once
+#ifndef ENUMERATION_H
+#define ENUMERATION_H
 
 /*To Defind Enumerration in preject together */
 
@@ -30,3 +31,5 @@ enum EnumActiveFunction
     TanhEnum = 3
 
 };
+
+#endif //ENUMERATION_H

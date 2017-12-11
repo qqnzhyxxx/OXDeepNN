@@ -20,4 +20,9 @@ Author: Niu ZhiYong
 Date: 2017-04-21
 Description: Data input interface
 **************************************************/
-#pragma once
+#ifndef OUTPUTLAYER_H
+#define OUTPUTLAYER_H
+
+
+
+#endif //OUTPUTLAYER_H

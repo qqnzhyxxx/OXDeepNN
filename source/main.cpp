@@ -19,7 +19,6 @@
 **************************************************/
 #include <iostream>
 #include "qcustomplot.h"
-#include <QApplication>
 
 #include "Enumeration.h"
 #include "Activatefunction.h"

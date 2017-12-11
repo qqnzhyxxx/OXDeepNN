@@ -17,7 +17,8 @@
 * Date:2017-03-20
 * Description:
 **************************************************/
-#pragma once
+#ifndef MACROS_H
+#define MACROS_H
 
 /*To Defind Macros in preject together */
 #ifndef IN
@@ -32,3 +33,4 @@
 #define OUT         //Tag the output variable
 #endif
 
+#endif //MACROS_H

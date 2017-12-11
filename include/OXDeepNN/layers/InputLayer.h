@@ -20,7 +20,8 @@ Author: Niu ZhiYong
 Date: 2017-04-21
 Description: Data input interface
 **************************************************/
-#pragma once
+#ifndef INPUTLAYER_H
+#define INPUTLAYER_H
 
 #include "layers/NeureLayer.h"
 
@@ -34,3 +35,5 @@ public:
 protected:
 
 };
+
+#endif //INPUTLAYER_H

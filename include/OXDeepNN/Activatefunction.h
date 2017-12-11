@@ -26,7 +26,9 @@ This class defind all kinds of Activate Function.
 And set Activation process algorithm by
 (double Activatefunction::Active ( IN double input)).
 **************************************************/
-#pragma once
+#ifndef ACTIVATEFUNCTION_H
+#define ACTIVATEFUNCTION_H
+
 #include <stdexcept>
 #include <cmath>
 #include "Macros.h"
@@ -108,6 +110,7 @@ inline double Activatefunction::Sigmoid( IN double input )
 {
     return ( 1.0 / ( 1.0 + exp(-input)));
 }
+
 inline double Activatefunction::Heaviside( IN double input)
 {
     if( input >= 0 )
@@ -117,6 +120,7 @@ inline double Activatefunction::Heaviside( IN double input)
     else
         return 0;
 }
+
 inline double Activatefunction::Signum( IN double input)
 {
     if( input > 0 )
@@ -126,8 +130,10 @@ inline double Activatefunction::Signum( IN double input)
     else
         return -1;
 }
+
 inline double Activatefunction::Tanh( IN double input)
 {
     return tanh(input);
 }
 
+#endif //ACTIVATEFUNCTION_H
