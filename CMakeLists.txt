@@ -41,6 +41,7 @@ add_subdirectory(qcustomplot)
 add_subdirectory(demo demo_bin)
 add_subdirectory(python python)
 add_subdirectory(pybind11)
+add_subdirectory(doc)
 #
 # Set the path to build projcet
 set(CMAKE_BINARY_DIR "${PROJECT_SOURCE_DIR}/bin")
